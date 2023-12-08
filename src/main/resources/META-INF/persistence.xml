@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- fichier de configuration JPA -->
+<persistence version="2.0"
+	xmlns="http://java.sun.com/xml/ns/persistence"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+
+	<!-- persistence unit = database, RESOURCE_LOCAL means that we work in independent mode -->
+	<persistence-unit name="jpa" transaction-type="RESOURCE_LOCAL">
+		<!-- JPA implementation to use -->
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+		<properties>
+			<!-- JDBC configuration -->
+			<property name="hibernate.connection.driver" value="com.mysql.cj.jdbc.Driver"/>
+			<property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/jdbc"/>
+			<property name="hibernate.connection.user" value="root"/>
+			<property name="hibernate.connection.password" value="root123@"/>
+
+			<!-- hibernate dialect -->
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
+
+			<!-- todo when lauching Hibernate -->
+			<!-- for production -->
+				<!-- name : no action, potentials problems will only be detected when executing the queries -->
+				<!-- validate (mainly used) : check consistency between Entities and tables in the database, crash when lauching if a problem is detected -->
+			<!-- for tests only, never in production -->
+				<!-- update : check consistency between Entities and tables in the database, 
+					if no consistency, if possible, add elements in the database structure (whole tables or just columns)
+					this way, we can create the whole database from scratch using Hibernate -->
+				<!-- create : drop table associated to an Entity and recreate the table -->
+			<property name="hibernate.hbn2dd.auto" value="validate"/>
+
+			<!-- display executed queries, do it just for debug -->
+				<!-- <property name="hibernate.show.sql" value="true"/> -->
+				<!-- <property name="hibernate.format_sql" value="true"/> -->
+		</properties>
+	</persistence-unit>
+</persistence>
