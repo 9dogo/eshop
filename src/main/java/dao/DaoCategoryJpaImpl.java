@@ -28,7 +28,7 @@ class DaoCategoryJpaImpl implements DaoCategory {
     }
 
     @Override
-    public void update(Category obj) {
+    public Category update(Category obj) {
         EntityManager em = JpaContext.getEntityManagerFactory().createEntityManager();
         EntityTransaction tx = em.getTransaction();
         tx.begin();
@@ -37,6 +37,7 @@ class DaoCategoryJpaImpl implements DaoCategory {
         obj = em.merge(obj);  
         tx.commit();
         em.close();
+        return obj;
     }
 
     @Override

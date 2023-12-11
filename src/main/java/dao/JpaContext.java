@@ -10,6 +10,7 @@ public class JpaContext {
     private static DaoSupplierJpaImpl daoSupplier = new DaoSupplierJpaImpl();
     private static DaoClientJpaImpl daoClient = new DaoClientJpaImpl();
     private static DaoCommandJpaImpl daoCommand = new DaoCommandJpaImpl();
+    private static DaoCommandLineJpaImpl daoCommandLine = new DaoCommandLineJpaImpl();
     private static DaoCategoryJpaImpl daoCategory = new DaoCategoryJpaImpl();
     private static DaoProductJpaImpl daoProductJpaImpl = new DaoProductJpaImpl();
 
@@ -23,6 +24,10 @@ public class JpaContext {
 
     public static DaoCommandJpaImpl getDaoCommand() {
         return daoCommand;
+    }
+
+    public static DaoCommandLineJpaImpl getDaoCommandLine() {
+        return daoCommandLine;
     }
 
     public static DaoClientJpaImpl getDaoClient() {

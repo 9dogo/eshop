@@ -28,7 +28,7 @@ class DaoClientJpaImpl implements DaoClient {
     }
 
     @Override
-    public void update(Client obj) {
+    public Client update(Client obj) {
         EntityManager em = JpaContext.getEntityManagerFactory().createEntityManager();
         EntityTransaction tx = em.getTransaction();
         tx.begin();
@@ -37,6 +37,7 @@ class DaoClientJpaImpl implements DaoClient {
         obj = em.merge(obj);  
         tx.commit();
         em.close();
+        return obj;
     }
 
     @Override
@@ -44,6 +45,7 @@ class DaoClientJpaImpl implements DaoClient {
         EntityManager em = JpaContext.getEntityManagerFactory().createEntityManager();
         EntityTransaction tx = em.getTransaction();
         tx.begin();
+        JpaContext.getDaoCommand().updateClientToNull(obj);
         em.remove(em.merge(obj));  // we call a merge to guarantee that the obj in argument is coming from the base
         tx.commit();
         em.close();
@@ -69,14 +71,73 @@ class DaoClientJpaImpl implements DaoClient {
 
     @Override
     public List<Client> findAll() {
-        List<Client> clients=null;
         EntityManager em = JpaContext.getEntityManagerFactory().createEntityManager();
         // Java Persistent Query Language -> query on an @Entity
         // we perform a select * to get the whole Entity, it is not interesting to get only a part of an @Entity
         // Query query = em.createQuery("from Client d"); // this work but the version bellow is a bit better
         // TypedQuery<> + argument Client.class : specify that the query as to return instances of client
         TypedQuery<Client> query = em.createQuery("from Client d",Client.class); // = select * from dept;
+        List<Client> clients = query.getResultList();
+        em.close();
+        return clients;
+    }
+
+    @Override
+    public List<Client> findByName(String name) {
+        List<Client> clients=null;
+        EntityManager em = JpaContext.getEntityManagerFactory().createEntityManager();
+        // c.name : calls Client.getName() for every instances of Client return in the query
+        // =:name : set a variable in the query, as with a JDBC preparedStatement
+        TypedQuery<Client> query = em.createQuery("select c from Client c where c.name=:name",Client.class); // = select * from dept;
+        // set the parameter "name" in the query to the value name
+        // we could also have written query.setParameter(0, name);
+        query.setParameter("name", name);
         clients = query.getResultList();
+        em.close();
+        return clients;
+    }
+
+    @Override
+    public List<Client> findByNameContaining(String name) {
+        List<Client> clients=null;
+        EntityManager em = JpaContext.getEntityManagerFactory().createEntityManager();
+        // c.name : calls Client.getName() for every instances of Client return in the query
+        // =:name : set a variable in the query, as with a JDBC preparedStatement
+        TypedQuery<Client> query = em.createQuery("select c from Client c where c.name=:name",Client.class); // = select * from dept;
+        // we are looking for instances of Client where getName() contains the string 'name'
+        query.setParameter("name", "%"+name+"%");
+        clients = query.getResultList();
+        em.close();
+        return clients;
+    }
+
+    @Override
+    // get the Client of id "id" as long as his commands
+    public Client findByIdFetchCommands(Long id) {
+        EntityManager em = JpaContext.getEntityManagerFactory().createEntityManager();
+        // left join fetch : load the list of command as long as the client, with just a fetch, this list is not loaded
+            // left : if the client doesn't have any command, he is still return by the join
+        TypedQuery<Client> query = em.createQuery("select cli from Client cli left join fetch Command com where cli.id=:id",Client.class); // = select * from dept;
+        // we are looking for instances of Client where getName() contains the string 'name'
+        query.setParameter("id", id);
+        // getSingleResult : return only one result : /!\ execpetion if several or 0 results
+        Client client = null;
+        try {
+            client = query.getSingleResult();
+        } catch (Exception e) {e.printStackTrace();}
+        em.close();
+        return client;
+    }
+
+    @Override
+    // get the Client of id "id" as long as his commands
+    public List<Client> findByCommandYear(String year) {
+        EntityManager em = JpaContext.getEntityManagerFactory().createEntityManager();
+        // c.commandes : get all the commands of a specific client
+        // we have to specify aliases to make where clause
+        TypedQuery<Client> query = em.createQuery("select cli from Client cli left join fetch c.command com where year(com.date)=:year",Client.class); // = select * from dept;
+        query.setParameter("year", year);
+        List<Client> clients = query.getResultList();
         em.close();
         return clients;
     }

@@ -4,7 +4,9 @@ import java.util.List;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
+import model.Client;
 import model.Command;
 
 // with a public visibility, instances of DaoCommandJpaImpl could be created in App.java
@@ -28,7 +30,7 @@ class DaoCommandJpaImpl implements DaoCommand {
     }
 
     @Override
-    public void update(Command obj) {
+    public Command update(Command obj) {
         EntityManager em = JpaContext.getEntityManagerFactory().createEntityManager();
         EntityTransaction tx = em.getTransaction();
         tx.begin();
@@ -37,6 +39,7 @@ class DaoCommandJpaImpl implements DaoCommand {
         obj = em.merge(obj);  
         tx.commit();
         em.close();
+        return obj;
     }
 
     @Override
@@ -51,12 +54,7 @@ class DaoCommandJpaImpl implements DaoCommand {
 
     @Override
     public void deleteByKey(Long key) {
-        EntityManager em = JpaContext.getEntityManagerFactory().createEntityManager();
-        EntityTransaction tx = em.getTransaction();
-        tx.begin();
-        em.remove(em.find(Command.class, key));  // get the updating object in the DB
-        tx.commit();
-        em.close();
+        delete(findByKey(key));
     }
 
     @Override
@@ -79,5 +77,31 @@ class DaoCommandJpaImpl implements DaoCommand {
         commands = query.getResultList();
         em.close();
         return commands;
+    }
+
+    @Override
+    public void deleteByClient(final Client client) {
+        EntityManager em = JpaContext.getEntityManagerFactory().createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        Query query = em.createQuery("delete from Command com where com.client=:client");
+        // em.executeUpdate(query);
+        query.setParameter(0, client);
+        query.executeUpdate();
+        tx. commit();
+        em.close();
+    }
+
+    @Override
+    public void updateClientToNull(Client client) {
+        EntityManager em = JpaContext.getEntityManagerFactory().createEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        tx.begin();
+        Query query = em.createQuery("update from Command com set com.client=null where com.client=:client");
+        // em.executeUpdate(query);
+        query.setParameter(0, client);
+        query.executeUpdate();
+        tx. commit();
+        em.close();
     }
 }

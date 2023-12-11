@@ -28,7 +28,7 @@ class DaoSupplierJpaImpl implements DaoSupplier {
     }
 
     @Override
-    public void update(Supplier obj) {
+    public Supplier update(Supplier obj) {
         EntityManager em = JpaContext.getEntityManagerFactory().createEntityManager();
         EntityTransaction tx = em.getTransaction();
         tx.begin();
@@ -37,6 +37,7 @@ class DaoSupplierJpaImpl implements DaoSupplier {
         obj = em.merge(obj);  
         tx.commit();
         em.close();
+        return obj;
     }
 
     @Override

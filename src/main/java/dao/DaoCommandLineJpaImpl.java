@@ -29,7 +29,7 @@ class DaoCommandLineJpaImpl implements DaoCommandLine {
     }
 
     @Override
-    public void update(CommandLine obj) {
+    public CommandLine update(CommandLine obj) {
         EntityManager em = JpaContext.getEntityManagerFactory().createEntityManager();
         EntityTransaction tx = em.getTransaction();
         tx.begin();
@@ -38,6 +38,7 @@ class DaoCommandLineJpaImpl implements DaoCommandLine {
         obj = em.merge(obj);  
         tx.commit();
         em.close();
+        return obj;
     }
 
     @Override
