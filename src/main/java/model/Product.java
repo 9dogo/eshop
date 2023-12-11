@@ -44,7 +44,6 @@ public class Product {
     @Transient
     private List<CommandLine> lines = new ArrayList<>();
 
-
     public Product() {
     }
 

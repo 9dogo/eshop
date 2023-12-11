@@ -12,8 +12,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "command")
@@ -30,7 +30,7 @@ public class Command {
     @JoinColumn(name = "client_id", foreignKey = @ForeignKey(name = "command_clientid_fk"))
     private Client client;
 
-    @Transient
+    @OneToMany(mappedBy = "id.command")
     private List<CommandLine> lines = new ArrayList<>();
 
     public Command() {

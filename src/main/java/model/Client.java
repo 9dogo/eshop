@@ -3,6 +3,8 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.annotations.DialectOverride.Version;
+
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
@@ -36,9 +38,16 @@ public class Client extends Person {
     })
     private Adress adress;
 
-
     @OneToMany(mappedBy = "client")
     private List<Command> commands = new ArrayList<>();
+
+    // @Version : an int or a long (primitive type because the default value is 0)
+    // at the insert of the object -> version == 0
+    // when calling update, version in the database and version of the java object in memory are compared
+        // if not the same, an error occurs -> to avoid this, we change the return type of update -> from void to ObjectType
+    // at every update, version of the database is incremented
+    @Version(major = 0)
+    private int version;
 
     public Client() {
     }

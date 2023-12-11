@@ -21,6 +21,11 @@ public class CommandLine {
         this.quantity = quantity;
     }
 
+    public CommandLine(CommandLineId id, int quantity) {
+        this.id = id;
+        this.quantity = quantity;
+    }
+
     public CommandLineId getId() {
         return id;
     }

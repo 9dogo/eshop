@@ -3,6 +3,7 @@ import java.util.List;
 import dao.DaoCategory;
 import dao.DaoClient;
 import dao.DaoCommand;
+import dao.DaoCommandLine;
 import dao.DaoProduct;
 import dao.DaoSupplier;
 import dao.JpaContext;
@@ -55,33 +56,39 @@ public class App {
         DaoCommand daoCommand = JpaContext.getDaoCommand();
         Command command = new Command();
 
-        CommandLine commandLine0 = new CommandLine(2);
-        CommandLine commandLine1 = new CommandLine(5);
-        
         Product apple = new Product("apple");
         apple.setDescription("very juicy");
         Product banana = new Product("banana");
-        apple.addLine(commandLine0);
-        banana.addLine(commandLine1);
         banana.setSupplier(joe);
-        commandLine0.setId(new CommandLineId(apple, command));
-        commandLine1.setId(new CommandLineId(banana, command));
-
-        command.addCommandLine(commandLine0);
-        command.addCommandLine(commandLine1);
-
-        associateCommandToClient(command, jerry);
-        daoCommand.insert(command);
-        // daoCommand.findAll().forEach(System.out::println);
-
-        System.err.println("jerry commands");
-        jerry.getCommands().forEach(System.out::println);
 
         DaoProduct daoProduct = JpaContext.getDaoProductJpaImpl();
-        System.err.println("all products");
         daoProduct.insert(apple);
         daoProduct.insert(banana);
         daoProduct.findAll().forEach(System.out::println);
+
+        associateCommandToClient(command, jerry);
+        daoCommand.insert(command);
+        System.err.println("jerry commands");
+        jerry.getCommands().forEach(System.out::println);
+
+        DaoCommandLine daoCommandLine = JpaContext.getDaoCommandLine();
+        CommandLine commandLine0 = new CommandLine( new CommandLineId(apple,command),2);
+        CommandLine commandLine1 = new CommandLine( new CommandLineId(banana,command),5);
+        System.err.println("commandline hascode "+commandLine0.hashCode()+ " "+commandLine0.getId().hashCode());
+        System.err.println("commandLine0 "+commandLine0);
+        System.err.println("commandLine0 , commandLineId "+commandLine0.getId());
+        System.err.println("commandLine0 , product"+commandLine0.getId().getProduct());
+        System.err.println("commandLine0 , command"+commandLine0.getId().getCommand());
+        daoCommandLine.insert(commandLine0);
+        // daoCommandLine.insert(commandLine1);
+
+        apple.addLine(commandLine0);
+        banana.addLine(commandLine1);
+        
+        command.addCommandLine(commandLine0);
+        command.addCommandLine(commandLine1);
+
+        System.err.println("all products");
 
         DaoCategory daoCategory = JpaContext.getDaoCategory();
         Category fruits = new Category("fruits");
@@ -96,10 +103,21 @@ public class App {
         // daoSupplier.delete(joe); // need to delete the product of the supplier first
         System.err.println("ok");
 
+        // we have a composite key in the class CommandLineId
+        // in the hopital project, in Visit, we set a visit_id to not have to deal with a composite key
+
         // /!\ when overlaoding toString() don't print object in a loop
             // ex : in category : don't print the category parent because its also a category
 
         // FetchType.EAGER -> eagerly fetch literralty means ~ "aller chercher vigoureusement"
 
+        // to ensure that we are working with the last version of the object in the database, in case several person are working in the database
+            // @Version -> see Client.java
+
+        // JPQL : execute queries on java entities, same keywords than SQL (+ some additional keywords)
+        // naming convention : queries of type "select" hava to be named like "findByAttribute/Property"
+            // if several conditions : findByXXXAndYYY , findByXXXOrYYY
+        // main difference with SQL : JPQLL works on objects
+        // see DaoClientJpaImpl
    }
 }
