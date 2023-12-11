@@ -60,7 +60,9 @@ class DaoCommandJpaImpl implements DaoCommand {
     @Override
     public Command findByKey(Long key) {
         EntityManager em = JpaContext.getEntityManagerFactory().createEntityManager();
-        Command command = em.find(Command.class, key);
+        TypedQuery<Command> query = em.createQuery("select com from Command com left join fetch com.lines where com.id=:id",Command.class); // = select * from dept;
+        query.setParameter("id", key);
+        Command command = query.getSingleResult();
         em.close();
         return command;
     }

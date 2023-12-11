@@ -1,5 +1,6 @@
 package model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -24,22 +25,32 @@ public class Category {
     private Long id;
 
     private String description;
+    private String name;
 
-    @OneToMany(mappedBy = "category", fetch = FetchType.EAGER)
-    private Set<Product> products;
+    public Category(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    // @OneToMany(mappedBy = "category", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "category")
+    private Set<Product> products =  new HashSet<>();
 
     @OneToMany(mappedBy = "parent", fetch = FetchType.EAGER)
-    private Set<Category> subCategory;
+    private Set<Category> subCategory = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "parent_id", foreignKey = @ForeignKey(name = "category_parentid_fk"))
     private Category parent;
 
     public Category() {
-    }
-
-    public Category(String desciption) {
-        this.description = desciption;
     }
 
     public Long getId() {
@@ -56,6 +67,11 @@ public class Category {
 
     public void setProducts(Set<Product> products) {
         this.products = products;
+    }
+
+    public void addProduct(Product product)
+    {
+        this.products.add(product);
     }
 
     public Set<Category> getSubCategory() {

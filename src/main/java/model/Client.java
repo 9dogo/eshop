@@ -24,6 +24,8 @@ public class Client extends Person {
     @Column(name = "c_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "c_name")
+    private String name;
     @Column(name = "c_firstName")
     private String firstName;
     @Column(name = "c_title")
@@ -158,5 +160,56 @@ public class Client extends Person {
 
     public void setCommands(List<Command> commands) {
         this.commands = commands;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
+
+    public Client(Long id, String name, String firstName, Title title, Adress adress, List<Command> commands,
+            int version) {
+        this.id = id;
+        this.name = name;
+        this.firstName = firstName;
+        this.title = title;
+        this.adress = adress;
+        this.commands = commands;
+        this.version = version;
+    }
+
+    public Client(String name, Long id, String name2, String firstName, Title title, Adress adress,
+            List<Command> commands, int version) {
+        super(name);
+        this.id = id;
+        name = name2;
+        this.firstName = firstName;
+        this.title = title;
+        this.adress = adress;
+        this.commands = commands;
+        this.version = version;
+    }
+
+    public Client(String name, String mail, String tel, Long id, String name2, String firstName, Title title,
+            Adress adress, List<Command> commands, int version) {
+        super(name, mail, tel);
+        this.id = id;
+        name = name2;
+        this.firstName = firstName;
+        this.title = title;
+        this.adress = adress;
+        this.commands = commands;
+        this.version = version;
     }
 }

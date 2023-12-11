@@ -30,7 +30,7 @@ public class App {
         
         // entite client, fournisseur, produit, commande, categorie
         DaoClient daoClient = JpaContext.getDaoClient() ;
-        Client jerry = new Client("smith","jerry");
+        Client jerry = new Client("jerry","smith");
         daoClient.insert(jerry);
 
         Adress jerryAdress = new Adress("1","main street","0001","big city");
@@ -93,15 +93,21 @@ public class App {
         DaoCategory daoCategory = JpaContext.getDaoCategory();
         Category fruits = new Category("fruits");
         Category exoticFruits = new Category("exotic fruits");
+        fruits.addProduct(apple);
+        apple.setCategory(fruits);  // needed to make the join in DaoCategoryJpaImpl.findByName
+        exoticFruits.addProduct(banana);
         exoticFruits.setParent(fruits);
         
         daoCategory.insert(fruits);
         daoCategory.insert(exoticFruits);
 
-        daoCategory.findAll().forEach(System.out::println);
+        daoProduct.update(apple);
+
+        // daoCategory.findAll().forEach(System.out::println);
 
         // daoSupplier.delete(joe); // need to delete the product of the supplier first
         System.err.println("ok");
+        System.err.println("fruits "+fruits.getProducts());
 
         // we have a composite key in the class CommandLineId
         // in the hopital project, in Visit, we set a visit_id to not have to deal with a composite key
@@ -119,5 +125,13 @@ public class App {
             // if several conditions : findByXXXAndYYY , findByXXXOrYYY
         // main difference with SQL : JPQLL works on objects
         // see DaoClientJpaImpl
+
+        // System.err.println(daoClient.findByNameContaining("j"));
+        // System.err.println(daoSupplier.findByCity("big city"));
+        // System.err.println("products of fruits "+daoCategory.findByName("fruits").getProducts());
+        Category categ = daoCategory.findByName("fruits");
+        System.err.println("@@@ fruits @@@ "+categ+" \n products : "+categ.getProducts());
+        // System.err.println(daoCommand.findByKey(1l));
+        // System.err.println("products of joe "+daoSupplier.findByName("joe").getProducts());
    }
 }

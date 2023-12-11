@@ -81,4 +81,32 @@ class DaoSupplierJpaImpl implements DaoSupplier {
         em.close();
         return suppliers;
     }
+
+    @Override
+    public List<Supplier> findByCity(String city) {
+        List<Supplier> suppliers=null;
+        EntityManager em = JpaContext.getEntityManagerFactory().createEntityManager();
+        // Java Persistent Query Language -> query on an @Entity
+        // we perform a select * to get the whole Entity, it is not interesting to get only a part of an @Entity
+        // Query query = em.createQuery("from Supplier d"); // this work but the version bellow is a bit better
+        // TypedQuery<> + argument Supplier.class : specify that the query as to return instances of supplier
+        TypedQuery<Supplier> query = em.createQuery("select s from Supplier s where s.adress.city=:city",Supplier.class); // = select * from dept;
+        query.setParameter("city", city);
+        suppliers = query.getResultList();
+        em.close();
+        return suppliers;
+    }
+
+    @Override
+    public Supplier findByName(String name) {
+        EntityManager em = JpaContext.getEntityManagerFactory().createEntityManager();
+        TypedQuery<Supplier> query = em.createQuery("select sup from Supplier sup left join fetch sup.products p where sup.name=:name",Supplier.class); // = select * from dept;
+        query.setParameter("name", name);
+        Supplier category = null;
+        try{
+            category = query.getSingleResult();
+        }
+        catch(Exception e){e.printStackTrace();}
+        return category;
+    }
 }

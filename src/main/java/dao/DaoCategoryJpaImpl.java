@@ -70,15 +70,28 @@ class DaoCategoryJpaImpl implements DaoCategory {
 
     @Override
     public List<Category> findAll() {
-        List<Category> categorys=null;
         EntityManager em = JpaContext.getEntityManagerFactory().createEntityManager();
         // Java Persistent Query Language -> query on an @Entity
         // we perform a select * to get the whole Entity, it is not interesting to get only a part of an @Entity
         // Query query = em.createQuery("from Category d"); // this work but the version bellow is a bit better
         // TypedQuery<> + argument Category.class : specify that the query as to return instances of category
         TypedQuery<Category> query = em.createQuery("from Category d",Category.class); // = select * from dept;
-        categorys = query.getResultList();
+        List<Category> categories = query.getResultList();
         em.close();
-        return categorys;
+        return categories;
     }
+
+    @Override
+    public Category findByName(String name) {
+        EntityManager em = JpaContext.getEntityManagerFactory().createEntityManager();
+        TypedQuery<Category> query = em.createQuery("select cat from Category cat left join fetch cat.products where cat.name=:name",Category.class); // = select * from dept;
+        query.setParameter("name", name);
+        Category category = null;
+        try{
+            category = query.getSingleResult();
+        }
+        catch(Exception e){e.printStackTrace();}
+        return category;
+    }
+
 }

@@ -99,14 +99,13 @@ class DaoClientJpaImpl implements DaoClient {
 
     @Override
     public List<Client> findByNameContaining(String name) {
-        List<Client> clients=null;
         EntityManager em = JpaContext.getEntityManagerFactory().createEntityManager();
         // c.name : calls Client.getName() for every instances of Client return in the query
         // =:name : set a variable in the query, as with a JDBC preparedStatement
         TypedQuery<Client> query = em.createQuery("select c from Client c where c.name=:name",Client.class); // = select * from dept;
         // we are looking for instances of Client where getName() contains the string 'name'
         query.setParameter("name", "%"+name+"%");
-        clients = query.getResultList();
+        List<Client> clients = query.getResultList();
         em.close();
         return clients;
     }

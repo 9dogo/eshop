@@ -8,7 +8,6 @@ import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -42,7 +41,8 @@ public class Supplier {
     })
     private Adress adress;
 
-    @OneToMany(mappedBy = "supplier", fetch = FetchType.EAGER)
+    // @OneToMany(mappedBy = "supplier", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "supplier")
     private List<Product> products = new ArrayList<>();
 
     public Supplier() {
