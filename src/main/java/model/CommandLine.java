@@ -1,8 +1,18 @@
 package model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "command_line")
 public class CommandLine {
     
+    // @EmbeddedId : make a primary key using an object
+    @EmbeddedId
     private CommandLineId id;
+    @Column(name = "quantity")
     private int quantity;
     public CommandLine() {
     }
