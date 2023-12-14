@@ -1,12 +1,14 @@
 import java.util.List;
 
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import config.JpaConfig;
 import dao.DaoCategory;
 import dao.DaoClient;
 import dao.DaoCommand;
 import dao.DaoCommandLine;
 import dao.DaoProduct;
 import dao.DaoSupplier;
-import dao.JpaContext;
 import model.Adress;
 import model.Category;
 import model.Client;
@@ -29,7 +31,8 @@ public class App {
     public static void main(String[] args) {
         
         // entite client, fournisseur, produit, commande, categorie
-        DaoClient daoClient = JpaContext.getDaoClient() ;
+        AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(JpaConfig.class);
+        DaoClient daoClient = ctx.getBean(DaoClient.class);
         Client jerry = new Client("jerry","smith");
         daoClient.insert(jerry);
 
@@ -39,11 +42,11 @@ public class App {
         daoClient.update(jerry);
         daoClient.findAll().forEach(System.out::println);
 
-        DaoSupplier daoSupplier = JpaContext.getDaoSupplier() ;
+        DaoSupplier daoSupplier = ctx.getBean(DaoSupplier.class);
         Supplier joe = new Supplier("joe");
         daoSupplier.insert(joe);
 
-        Adress joeAdress = new Adress("1","main street","0001","big city");
+        Adress joeAdress = new Adress("1","main street","54000","big city");
         joe.setAdress(joeAdress);
 
         daoSupplier.update(joe);
@@ -53,7 +56,7 @@ public class App {
 
     // public Client(String name, String mail, String tel, Long id, String firstName, Title title) {
 
-        DaoCommand daoCommand = JpaContext.getDaoCommand();
+        DaoCommand daoCommand = ctx.getBean(DaoCommand.class);
         Command command = new Command();
 
         Product apple = new Product("apple");
@@ -61,7 +64,7 @@ public class App {
         Product banana = new Product("banana");
         banana.setSupplier(joe);
 
-        DaoProduct daoProduct = JpaContext.getDaoProductJpaImpl();
+        DaoProduct daoProduct = ctx.getBean(DaoProduct.class);
         daoProduct.insert(apple);
         daoProduct.insert(banana);
         daoProduct.findAll().forEach(System.out::println);
@@ -71,7 +74,7 @@ public class App {
         System.err.println("jerry commands");
         jerry.getCommands().forEach(System.out::println);
 
-        DaoCommandLine daoCommandLine = JpaContext.getDaoCommandLine();
+        DaoCommandLine daoCommandLine = ctx.getBean(DaoCommandLine.class);
         CommandLine commandLine0 = new CommandLine( new CommandLineId(apple,command),2);
         CommandLine commandLine1 = new CommandLine( new CommandLineId(banana,command),5);
         System.err.println("commandline hascode "+commandLine0.hashCode()+ " "+commandLine0.getId().hashCode());
@@ -90,7 +93,7 @@ public class App {
 
         System.err.println("all products");
 
-        DaoCategory daoCategory = JpaContext.getDaoCategory();
+        DaoCategory daoCategory = ctx.getBean(DaoCategory.class);
         Category fruits = new Category("fruits");
         Category exoticFruits = new Category("exotic fruits");
         fruits.addProduct(apple);
@@ -103,7 +106,8 @@ public class App {
 
         daoProduct.update(apple);
 
-        // daoCategory.findAll().forEach(System.out::println);
+        daoCategory.findAll().forEach((n)->{System.err.println(n.getName());});
+
 
         // daoSupplier.delete(joe); // need to delete the product of the supplier first
         System.err.println("ok");
@@ -129,9 +133,13 @@ public class App {
         // System.err.println(daoClient.findByNameContaining("j"));
         // System.err.println(daoSupplier.findByCity("big city"));
         // System.err.println("products of fruits "+daoCategory.findByName("fruits").getProducts());
-        Category categ = daoCategory.findByName("fruits");
-        System.err.println("@@@ fruits @@@ "+categ+" \n products : "+categ.getProducts());
+        // Category categ = daoCategory.findByName("fruits");
+        // System.err.println("@@@ fruits @@@ "+categ+" \n products : "+categ.getProducts());
         // System.err.println(daoCommand.findByKey(1l));
         // System.err.println("products of joe "+daoSupplier.findByName("joe").getProducts());
+        System.err.println("all suppliers "+daoSupplier.findAll());
+        System.err.println("in dept 54 "+daoSupplier.findByDepartement("54"));
+
+        ctx.close();
    }
 }
