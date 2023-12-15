@@ -51,7 +51,7 @@ public class SupplierService {
 	}
 	
 	public Supplier findByIdWithProducts(Long id) {
-		CheckId.checkIdNull(id);
+		CheckId.checkIdNotNull(id);
 		return supplierRepository.findByIdFetchProduct(id).orElseThrow(()->{throw new SupplierException("unable to find the Supplier with id "+id);
 	});
 	}
