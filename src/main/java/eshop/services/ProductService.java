@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import project.entities.Product;
+import project.model.Product;
 import project.exceptions.ProductException;
 import project.exceptions.CheckId;
 import project.repositories.ProductRepository;

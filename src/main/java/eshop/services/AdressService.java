@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import project.entities.Adress;
+import project.model.Adress;
 import project.exceptions.AdressException;
 import project.exceptions.CheckId;
 import project.repositories.AdressRepository;

@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import project.entities.Supplier;
+import project.model.Supplier;
 import project.exceptions.SupplierException;
 import project.exceptions.CheckId;
 import project.repositories.SupplierRepository;
