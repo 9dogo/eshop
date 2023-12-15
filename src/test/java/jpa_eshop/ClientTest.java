@@ -139,6 +139,23 @@ class ClientTest {
 		assertEquals(client, res.get(0));
 	}
 
+	// @Test
+	// void findByNameAndFirstNameInvalidName() {
+	// 	Client client = new Client();
+	// 	client.setFirstName("jerry");
+	// 	// client.setName("smith");
+	// 	client = clientSrv.create(client);
+	// 	assertEquals(ClientException.class, clientSrv.findByNameAndFirstName(client.getName(), client.getFirstName()));
+	// }
+	// @Test
+	// void findByNameAndFirstNameInvalidFirstName() {
+	// 	Client client = new Client();
+	// 	// client.setFirstName("jerry");
+	// 	client.setName("smith");
+	// 	client = clientSrv.create(client);
+	// 	assertEquals(ClientException.class, clientSrv.findByNameAndFirstName(client.getName(), client.getFirstName()));
+	// }
+
 	@Test
 	void findByIdFetchCommand() {
 		Client client = new Client();
@@ -146,9 +163,13 @@ class ClientTest {
 
 		Command command = new Command();
 		command.setClient(client);
+		
+		client.addCommand(command);
 		commandSrv.create(command);
 
 		Client res = clientSrv.findByIdWithCommand(client.getId());
 		assertEquals(client, res); 
+		assertEquals(1, client.getCommands().size());
+		assertEquals(command, client.getCommands().get(0)); 
 	}
 }

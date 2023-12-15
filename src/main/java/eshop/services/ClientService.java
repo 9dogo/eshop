@@ -68,6 +68,11 @@ public class ClientService {
 	}
 	
 	public List<Client> findByNameAndFirstName(String name, String firstName) {
+		if (name == null || name.isBlank())
+			throw new ClientException("invalid name");
+		if (firstName == null || firstName.isBlank())
+			throw new ClientException("invalid firstName");
+
 		List<Client> clients = clientRepository.findByNameAndFirstName(name, firstName);
 		if (clients.isEmpty()) {
 			throw new ClientException("client not in table");

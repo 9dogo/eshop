@@ -12,7 +12,6 @@ import eshop.exceptions.CheckId;
 import eshop.repositories.ProductRepository;
 
 @Service
-//traitement disponible sur les products
 public class ProductService {
 
 	@Autowired
@@ -47,14 +46,14 @@ public class ProductService {
 		deleteById(product.getId());
 	}
 	
-	public Product findByname(String name) {
+	public List<Product> findByname(String name) {
 		if (name == null || name.isBlank()) {
 			throw new ProductException("invalid name");
 		}
 		return productRepository.findByName(name);
 	}
 	
-	public Product findByCategory(Category category) {
+	public List<Product> findByCategory(Category category) {
 		if (category == null) {
 			throw new ProductException("invalide category");
 		}
