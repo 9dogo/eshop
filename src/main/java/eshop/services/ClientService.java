@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import project.model.Client;
-import project.exceptions.ClientException;
-import project.exceptions.CheckId;
-import project.repositories.ClientRepository;
+import eshop.model.Client;
+import eshop.exceptions.ClientException;
+import eshop.exceptions.CheckId;
+import eshop.repositories.ClientRepository;
 
 @Service
 //traitement disponible sur les clients

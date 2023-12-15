@@ -1,4 +1,4 @@
-package model;
+package eshop.model;
 
 
 public enum Title {

@@ -1,4 +1,4 @@
-package project.exceptions;
+package eshop.exceptions;
 
 public class IdNotNullExcpetion extends RuntimeException {
 

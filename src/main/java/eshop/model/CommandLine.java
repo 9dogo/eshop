@@ -1,4 +1,4 @@
-package model;
+package eshop.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
