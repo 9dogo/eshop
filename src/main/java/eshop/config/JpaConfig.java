@@ -1,4 +1,4 @@
-package config;
+package eshop.config;
 
 import java.util.Properties;
 
