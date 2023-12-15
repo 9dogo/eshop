@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import eshop.model.Category;
 import eshop.model.Product;
 import eshop.exceptions.ProductException;
 import eshop.exceptions.CheckId;
@@ -45,4 +46,19 @@ public class ProductService {
 		CheckId.checkIdNotNull(product.getId());
 		deleteById(product.getId());
 	}
+	
+	public Product findByname(String name) {
+		if (name == null || name.isBlank()) {
+			throw new ProductException("invalid name");
+		}
+		return productRepository.findByName(name);
+	}
+	
+	public Product findByCategory(Category category) {
+		if (category == null) {
+			throw new ProductException("invalide category");
+		}
+		return productRepository.findByCategory(category);
+	}
+	
 }
