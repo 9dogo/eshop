@@ -1,10 +1,18 @@
 package eshop.services;
 
-public class CheckIdjncn extends RuntimeException {
+import eshop.exceptions.IdNotNullExcpetion;
+import eshop.exceptions.IdNullExcpetion;
 
-	public static void checkIdNull(Long id) {
-		// TODO Auto-generated method stub
-		
+public class CheckId extends RuntimeException {
+
+	public void checkIdNull(Long id) {
+		if (id != null)
+			throw new IdNotNullExcpetion();
+	}
+
+	public void checkIdNotNull(Long id) {
+		if (id == null)
+			throw new IdNullExcpetion();
 	}
 
 }

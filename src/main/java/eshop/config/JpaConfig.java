@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -15,8 +16,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import jakarta.persistence.EntityManagerFactory;
 
 @Configuration
-@ComponentScan("dao")
+@ComponentScan("eshop.services")
 @EnableTransactionManagement
+@EnableJpaRepositories("eshop.repositories")
 public class JpaConfig {
 
 	// bean qui gere l'acces à la base de donnee
@@ -37,7 +39,7 @@ public class JpaConfig {
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory(BasicDataSource dataSource) {
 		LocalContainerEntityManagerFactoryBean emf = new LocalContainerEntityManagerFactoryBean();
 		emf.setDataSource(dataSource);
-		emf.setPackagesToScan("model");
+		emf.setPackagesToScan("eshop.model");
 		emf.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
 
 		Properties properties = new Properties();

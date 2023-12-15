@@ -23,8 +23,9 @@ public class CommandLineService {
 	}
 
 	public CommandLine findById(Long id) {
-		CheckId.checkIdNotNull(id);
-		return commandlineRepository.findById(id).orElseThrow(() -> {throw new CommandLineException("unable to find the CommandLine with id "+id);});
+		return null;
+		// CheckId.checkIdNotNull(id);
+		// return commandlineRepository.findById(id).orElseThrow(() -> {throw new CommandLineException("unable to find the CommandLine with id "+id);});
 	}
 
 	public List<CommandLine> findAll() {

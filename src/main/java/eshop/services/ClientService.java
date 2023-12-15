@@ -27,7 +27,7 @@ public class ClientService {
 	}
 
 	public Client findById(Long id) {
-		CheckId.checkIdNull(id);
+		CheckId.checkIdNotNull(id);
 		return clientRepository.findById(id).orElseThrow(() -> {throw new ClientException("unable to find the Client with id "+id);});
 	}
 
@@ -36,18 +36,18 @@ public class ClientService {
 	}
 
 	public Client update(Client client) {
-		CheckId.checkIdNull(client.getId());
+		CheckId.checkIdNotNull(client.getId());
 		return clientRepository.save(client);
 	}
 
 	public void deleteById(Long id) {
-		CheckId.checkIdNull(id);
+		CheckId.checkIdNotNull(id);
 		commandRepository.deleteByClient(findById(id));
 		clientRepository.delete(findById(id));
 	}
 
 	public void delete(Client client) {
-		CheckId.checkIdNull(client.getId());
+		CheckId.checkIdNotNull(client.getId());
 		deleteById(client.getId());
 	}
 	
@@ -76,7 +76,7 @@ public class ClientService {
 	}
 	
 	public Client findByIdWithCommand(Long id) {
-		CheckId.checkIdNull(id);
-		return clientRepository.findByIdFetchCommand(id);
+		CheckId.checkIdNotNull(id);
+		return clientRepository.findByIdFetchCommand(id).orElseThrow();
 	}
 }
