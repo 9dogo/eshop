@@ -6,11 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import eshop.model.Client;
+import eshop.exceptions.CheckId;
 import eshop.exceptions.ClientException;
 import eshop.repositories.ClientRepository;
 
 @Service
-//traitement disponible sur les clients
 public class ClientService {
 
 	@Autowired
@@ -43,5 +43,34 @@ public class ClientService {
 	public void delete(Client client) {
 		CheckId.checkIdNull(client.getId());
 		deleteById(client.getId());
+	}
+	
+	public List<Client> findByName(String name) {
+		List<Client> clients = clientRepository.findByName(name);
+		if (clients.isEmpty()) {
+			throw new ClientException("client name not in table");
+		}
+		return clients;
+	}
+	
+	public List<Client> findByFirstName(String firstName) {
+		List<Client> clients = clientRepository.findByFirstName(firstName);
+		if (clients.isEmpty()) {
+			throw new ClientException("client first name not in table");
+		}
+		return clients;
+	}
+	
+	public List<Client> findByNameAndFirstName(String name, String firstName) {
+		List<Client> clients = clientRepository.findByNameAndFirstName(name, firstName);
+		if (clients.isEmpty()) {
+			throw new ClientException("client not in table");
+		}
+		return clients;
+	}
+	
+	public Client findByIdWithCommand(Long id) {
+		CheckId.checkIdNull(id);
+		return clientRepository.findByIdFetchCommand(id);
 	}
 }
