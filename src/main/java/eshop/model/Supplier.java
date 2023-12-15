@@ -117,6 +117,10 @@ public class Supplier {
         this.products = products;
     }
 
+    public void addProduct(Product product) {
+        this.products.add(product);
+    }
+
     @Override
     public String toString() {
         String output = "Supplier [id=" + id + ", name=" + name + ", contact=" + contact + ", adress=" + adress + "]";

@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Commit;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
@@ -157,19 +156,19 @@ class ClientTest {
 	// }
 
 	@Test
-	void findByIdFetchCommand() {
+	void findByIdWithCommand() {
 		Client client = new Client();
 		client = clientSrv.create(client);
 
 		Command command = new Command();
-		command.setClient(client);
+		// command.setClient(client);
 		
 		client.addCommand(command);
 		commandSrv.create(command);
 
 		Client res = clientSrv.findByIdWithCommand(client.getId());
 		assertEquals(client, res); 
-		assertEquals(1, client.getCommands().size());
-		assertEquals(command, client.getCommands().get(0)); 
+		assertEquals(1, res.getCommands().size());
+		assertEquals(command, res.getCommands().get(0)); 
 	}
 }

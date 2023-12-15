@@ -44,14 +44,14 @@ class SupplierTest {
 	@Test
 	@Commit
 	void findByIdWithProductsTest() {
-		Supplier s1=supplierService.create(new Supplier("alex"));
+		Supplier s1=new Supplier("alex");
+		supplierService.create(s1);
 		Product p= productService.create(new Product("banane"));
-		p.setSupplier(s1);
+		// p.setSupplier(s1);
+		s1.addProduct(p);
 		productService.update(p);
 		Supplier sTest=supplierService.findByIdWithProducts(s1.getId());
-		assertEquals(sTest.getProducts().size(), 1);
-		assertEquals(sTest.getProducts().get(0), p);
-		
+		assertEquals(1, sTest.getProducts().size());
+		assertEquals(p, sTest.getProducts().get(0));
 	}
-
 }
