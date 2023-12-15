@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import eshop.model.Client;
 import eshop.exceptions.ClientException;
-import eshop.exceptions.CheckId;
 import eshop.repositories.ClientRepository;
 
 @Service
