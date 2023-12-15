@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import project.model.Category;
-import project.exceptions.CategoryException;
-import project.exceptions.CheckId;
-import project.repositories.CategoryRepository;
+import eshop.model.Category;
+import eshop.exceptions.CategoryException;
+import eshop.exceptions.CheckId;
+import eshop.repositories.CategoryRepository;
 
 @Service
 //traitement disponible sur les categorys

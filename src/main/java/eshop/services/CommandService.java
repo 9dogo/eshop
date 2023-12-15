@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import project.model.Command;
-import project.exceptions.CommandException;
-import project.exceptions.CheckId;
-import project.repositories.CommandRepository;
+import eshop.model.Command;
+import eshop.exceptions.CommandException;
+import eshop.exceptions.CheckId;
+import eshop.repositories.CommandRepository;
 
 @Service
 //traitement disponible sur les commands

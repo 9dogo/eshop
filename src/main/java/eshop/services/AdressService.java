@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import project.model.Adress;
-import project.exceptions.AdressException;
-import project.exceptions.CheckId;
-import project.repositories.AdressRepository;
+import eshop.model.Adress;
+import eshop.exceptions.AdressException;
+import eshop.exceptions.CheckId;
+import eshop.repositories.AdressRepository;
 
 @Service
 //traitement disponible sur les adresss

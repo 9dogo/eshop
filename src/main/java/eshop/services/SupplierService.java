@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import project.model.Supplier;
-import project.exceptions.SupplierException;
-import project.exceptions.CheckId;
-import project.repositories.SupplierRepository;
+import eshop.model.Supplier;
+import eshop.exceptions.SupplierException;
+import eshop.exceptions.CheckId;
+import eshop.repositories.SupplierRepository;
 
 @Service
 //traitement disponible sur les suppliers
