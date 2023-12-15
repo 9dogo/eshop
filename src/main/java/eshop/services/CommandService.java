@@ -45,4 +45,9 @@ public class CommandService {
 		CheckId.checkIdNotNull(command.getId());
 		deleteById(command.getId());
 	}
+
+	public Command findByIdWithCommandLine(Long id) {
+		CheckId.checkIdNotNull(id);
+		return commandRepository.findByNumeroFetchLignesCommande(id);
+	}
 }
