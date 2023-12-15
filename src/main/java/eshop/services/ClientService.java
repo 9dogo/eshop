@@ -9,6 +9,7 @@ import eshop.model.Client;
 import eshop.exceptions.CheckId;
 import eshop.exceptions.ClientException;
 import eshop.repositories.ClientRepository;
+import eshop.repositories.CommandRepository;
 
 @Service
 public class ClientService {
@@ -16,6 +17,10 @@ public class ClientService {
 	@Autowired
 	private ClientRepository clientRepository;
 
+	@Autowired
+	private CommandRepository commandRepository;
+	
+	
 	public Client create(Client client) {
 		CheckId.checkIdNull(client.getId());
 		return clientRepository.save(client);
@@ -37,6 +42,7 @@ public class ClientService {
 
 	public void deleteById(Long id) {
 		CheckId.checkIdNull(id);
+		commandRepository.deleteByClient(findById(id));
 		clientRepository.delete(findById(id));
 	}
 
