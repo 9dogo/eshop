@@ -45,4 +45,15 @@ public class SupplierService {
 		CheckId.checkIdNotNull(supplier.getId());
 		deleteById(supplier.getId());
 	}
+	
+	public Supplier findByName(String name) {
+		return supplierRepository.findByName(name);
+	}
+	
+	public Supplier findByIdWithProducts(Long id) {
+		CheckId.checkIdNull(id);
+		return supplierRepository.findByIdFetchProduct(id).orElseThrow(()->{throw new SupplierException("unable to find the Supplier with id "+id);
+	});
+	}
+	
 }
