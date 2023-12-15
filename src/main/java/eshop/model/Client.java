@@ -162,6 +162,11 @@ public class Client extends Person {
         this.commands = commands;
     }
 
+    public void addCommand(Command command)
+    {
+        this.commands.add(command);
+    }
+
     public String getName() {
         return name;
     }
