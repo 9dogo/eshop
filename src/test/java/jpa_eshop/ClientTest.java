@@ -2,6 +2,8 @@ package jpa_eshop;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Commit;
@@ -9,10 +11,14 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import eshop.services.ClientService;
+import eshop.services.CommandService;
 import eshop.exceptions.ClientException;
+import eshop.exceptions.IdNotNullExcpetion;
+import eshop.exceptions.IdNullExcpetion;
 import eshop.config.JpaConfig;
 import jakarta.transaction.Transactional;
 import eshop.model.Client;
+import eshop.model.Command;
 
 @SpringJUnitConfig(JpaConfig.class)
 @Transactional
@@ -20,49 +26,129 @@ import eshop.model.Client;
 class ClientTest {
 
 	@Autowired
-	ClientService ClientSrv;
-	
-	// static Client c = new Client("testNom", Title.M);
+	ClientService clientSrv;
+	@Autowired
+	CommandService commandSrv;
 	
 	@Test
 	void injectionTest() {
-		assertNotNull(ClientSrv);
+		assertNotNull(clientSrv);
 	}
 	
 	@Test
 	void recuperationClientSerficeTest() {
-		assertNotNull(ClientSrv);
+		assertNotNull(clientSrv);
 	}
 	
 	@Test
-	@Commit
 	void creatingClientTest() {
 		Client client = new Client();
 		assertNull(client.getId());
-		client = ClientSrv.create(client);
+		client = clientSrv.create(client);
 		assertNotNull(client);
-		assertNotNull(ClientSrv.findById(client.getId()));
+		assertNotNull(clientSrv.findById(client.getId()));
 	}
 	
 	@Test
 	void ClientExceptionTest() {
 		assertThrows(ClientException.class, () -> {
-			ClientSrv.findById(99999999L);
+			clientSrv.findById(99999999L);
 		});
+	}
+
+	@Test
+	void IdNotNullExceptionTest() {
+		Client client = new Client();
+		client.setId(1L);
+		assertThrows(IdNotNullExcpetion.class, () -> { clientSrv.create(client); });
+	}
+	
+	@Test
+	void IdNullExceptionTestUpdate() {
+		Client client = new Client();
+		assertThrows(IdNullExcpetion.class, () -> { clientSrv.update(client); });
+	}
+
+	@Test
+	void IdNullExceptionTestFindById() {
+		Client client = new Client();
+		assertThrows(IdNullExcpetion.class, () -> { clientSrv.findById(client.getId()); });
+	}
+	
+	@Test
+	void IdNullExceptionTestDeleteById() {
+		Client client = new Client();
+		assertThrows(IdNullExcpetion.class, () -> { clientSrv.deleteById(client.getId()); });
+	}
+	
+	@Test
+	void IdNullExceptionTestFindByIdWithCommand() {
+		Client client = new Client();
+		assertThrows(IdNullExcpetion.class, () -> { clientSrv.findByIdWithCommand(client.getId()); });
 	}
 	
 	@Test
 	void findAllTest() {
-		assertNotNull(ClientSrv.findAll());
+		assertNotNull(clientSrv.findAll());
 	}
 	
 	@Test
 	void updateTest() {
 		Client client = new Client();
-		client = ClientSrv.create(client);
-		System.out.println("cleint id "+client.getId());
+		client = clientSrv.create(client);
 		client.setName("test2");
-		ClientSrv.update(client);
-		assertEquals(ClientSrv.findById(client.getId()).getName(), "test2");
+		clientSrv.update(client);
+		assertEquals(clientSrv.findById(client.getId()).getName(), "test2");
+	}
+
+	@Test
+	void deleteTest() {
+		Client client = new Client();
+		client = clientSrv.create(client);
+		clientSrv.delete(client);
+
+		assertEquals(0, clientSrv.findAll().size());
+	}
+
+	@Test
+	void findByName() {
+		Client client = new Client();
+		client.setName("jerry");
+		client = clientSrv.create(client);
+		List<Client> res = clientSrv.findByName(client.getName());
+		assertEquals(1, res.size());
+		assertEquals(client, res.get(0));
+	}
+	@Test
+	void findByFirstName() {
+		Client client = new Client();
+		client.setFirstName("jerry");
+		client = clientSrv.create(client);
+		List<Client> res = clientSrv.findByFirstName(client.getFirstName());
+		assertEquals(1, res.size());
+		assertEquals(client, res.get(0));
+	}
+	@Test
+	void findByNameAndFirstName() {
+		Client client = new Client();
+		client.setFirstName("jerry");
+		client.setName("smith");
+		client = clientSrv.create(client);
+		List<Client> res = clientSrv.findByNameAndFirstName(client.getName(), client.getFirstName());
+		assertEquals(1, res.size());
+		assertEquals(client, res.get(0));
+	}
+
+	@Test
+	void findByIdFetchCommand() {
+		Client client = new Client();
+		client = clientSrv.create(client);
+
+		Command command = new Command();
+		command.setClient(client);
+		commandSrv.create(command);
+
+		Client res = clientSrv.findByIdWithCommand(client.getId());
+		assertEquals(client, res); 
 	}
 }

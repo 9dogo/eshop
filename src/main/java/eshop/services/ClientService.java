@@ -77,6 +77,6 @@ public class ClientService {
 	
 	public Client findByIdWithCommand(Long id) {
 		CheckId.checkIdNotNull(id);
-		return clientRepository.findByIdFetchCommand(id).orElseThrow();
+		return clientRepository.findByIdFetchCommand(id).orElseThrow(() -> {throw new ClientException("can't find the client with id "+id);});
 	}
 }
