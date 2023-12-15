@@ -1,0 +1,48 @@
+package eshop.services;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import project.entities.Supplier;
+import project.exceptions.SupplierException;
+import project.exceptions.CheckId;
+import project.repositories.SupplierRepository;
+
+@Service
+//traitement disponible sur les suppliers
+public class SupplierService {
+
+	@Autowired
+	private SupplierRepository supplierRepository;
+
+	public Supplier create(Supplier supplier) {
+		CheckId.checkIdNull(supplier.getId());
+		return supplierRepository.save(supplier);
+	}
+
+	public Supplier findById(Long id) {
+		CheckId.checkIdNotNull(id);
+		return supplierRepository.findById(id).orElseThrow(() -> {throw new SupplierException("unable to find the Supplier with id "+id);});
+	}
+
+	public List<Supplier> findAll() {
+		return supplierRepository.findAll();
+	}
+
+	public Supplier update(Supplier supplier) {
+		CheckId.checkIdNotNull(supplier.getId());
+		return supplierRepository.save(supplier);
+	}
+
+	public void deleteById(Long id) {
+		CheckId.checkIdNotNull(id);
+		supplierRepository.delete(findById(id));
+	}
+
+	public void delete(Supplier supplier) {
+		CheckId.checkIdNotNull(supplier.getId());
+		deleteById(supplier.getId());
+	}
+}
