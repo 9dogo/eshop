@@ -16,7 +16,7 @@ public class CommandService {
 
 	@Autowired
 	private CommandRepository commandRepository;
-
+	
 	public Command create(Command command) {
 		CheckId.checkIdNull(command.getId());
 		return commandRepository.save(command);
