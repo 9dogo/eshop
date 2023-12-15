@@ -18,7 +18,7 @@ public class CommandLineService {
 	private CommandLineRepository commandlineRepository;
 
 	public CommandLine create(CommandLine commandline) {
-		CheckId.checkIdNull(commandline.getId());
+		// CheckId.checkIdNull(commandline.getId());
 		return commandlineRepository.save(commandline);
 	}
 
@@ -32,7 +32,7 @@ public class CommandLineService {
 	}
 
 	public CommandLine update(CommandLine commandline) {
-		CheckId.checkIdNotNull(commandline.getId());
+		// CheckId.checkIdNotNull(commandline.getId());
 		return commandlineRepository.save(commandline);
 	}
 
@@ -42,7 +42,7 @@ public class CommandLineService {
 	}
 
 	public void delete(CommandLine commandline) {
-		CheckId.checkIdNotNull(commandline.getId());
-		deleteById(commandline.getId());
+		// CheckId.checkIdNotNull(commandline.getId());
+		// deleteById(commandline.getId());
 	}
 }
